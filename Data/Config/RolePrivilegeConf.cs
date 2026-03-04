@@ -20,6 +20,11 @@ namespace AppStudent.Data.Config
             builder.Property(n => n.IsDelete).IsRequired();
             builder.Property(n => n.CreateDate).IsRequired();
 
+            builder.HasOne(n => n.Role)
+                .WithMany(n => n.RolePrivileges)
+                .HasForeignKey(n => n.RoleId)
+                .HasConstraintName("FK_RolePrivileges_Roles");
+
         }
     }
 }

@@ -18,7 +18,12 @@ namespace AppStudent.Data.Config
             builder.Property(n => n.Address).IsRequired();
             builder.Property(n => n.DBO).IsRequired();
 
+
+
+
         }
+
+
 
         //modelBuilder.Entity<Student>().HasData(new List<Student>()
         //{

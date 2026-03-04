@@ -11,5 +11,7 @@
         public bool IsDelete { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifiedDate { get; set; }
+
+        public virtual ICollection<RolePrivilege> RolePrivileges { get; set; }
     }
 }

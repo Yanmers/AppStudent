@@ -13,5 +13,7 @@
         public bool IsDelete { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime ModifiedDate { get; set; }
+
+        public Role Role { get; set; }
     }
 }
