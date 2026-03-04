@@ -1,0 +1,35 @@
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+
+namespace AppStudent.Data.Config
+{
+    public class UserRoleMappingConf : IEntityTypeConfiguration<UserRoleMapping>
+    {
+        public void Configure(EntityTypeBuilder<UserRoleMapping> builder)
+        {
+
+            builder.ToTable("UserRoleMappings");
+            builder.HasKey(n => n.Id);
+
+            builder.Property(n => n.Id).UseIdentityColumn();
+
+            builder.HasIndex(n => new { n.UserId, n.RoleId }, "UK_UserRoleMapping").IsUnique();
+
+
+            builder.Property(n => n.UserId).IsRequired();
+            builder.Property(n => n.RoleId).IsRequired();
+
+            builder.HasOne(n => n.Role)
+               .WithMany(n => n.UserRoleMappings)
+               .HasForeignKey(n => n.RoleId)
+               .HasConstraintName("FK_UserRoleMappings_Roles");
+
+            builder.HasOne(n => n.User)
+               .WithMany(n => n.UserRoleMappings)
+               .HasForeignKey(n => n.UserId)
+               .HasConstraintName("FK_UserRoleMappings_User");
+
+
+        }
+    }
+}

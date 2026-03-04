@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStudent.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    [Migration("20260304155941_AddForeignkey")]
-    partial class AddForeignkey
+    [Migration("20260304160719_AddTable")]
+    partial class AddTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

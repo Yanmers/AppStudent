@@ -23,6 +23,8 @@ namespace AppStudent.Data
         public DateTime CreateDate { get; set; }
         public DateTime ModifiedDate { get; set; }
 
+        public virtual ICollection<UserRoleMapping> UserRoleMappings { get; set; }
+
 
     }
 }

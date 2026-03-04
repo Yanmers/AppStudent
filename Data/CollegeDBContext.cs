@@ -13,9 +13,9 @@ namespace AppStudent.Data
         public DbSet<Student> Students { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Department> Departments { get; set; }
-
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePrivilege> RolePrivileges { get; set; }
+        public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +24,7 @@ namespace AppStudent.Data
             modelBuilder.ApplyConfiguration(new UserConf());
             modelBuilder.ApplyConfiguration(new RoleConf());
             modelBuilder.ApplyConfiguration(new RolePrivilegeConf());
+            modelBuilder.ApplyConfiguration(new UserRoleMappingConf());
 
         }
 

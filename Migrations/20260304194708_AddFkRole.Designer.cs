@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStudent.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    [Migration("20260304150932_AddTableRoleAndRolePrivilege")]
-    partial class AddTableRoleAndRolePrivilege
+    [Migration("20260304194708_AddFkRole")]
+    partial class AddFkRole
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace AppStudent.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NameDepartment")
@@ -112,6 +111,8 @@ namespace AppStudent.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RoleId");
+
                     b.ToTable("RolePrivileges", (string)null);
                 });
 
@@ -181,6 +182,75 @@ namespace AppStudent.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", (string)null);
+                });
+
+            modelBuilder.Entity("AppStudent.Data.UserRoleMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.HasIndex(new[] { "UserId", "RoleId" }, "UK_UserRoleMapping")
+                        .IsUnique();
+
+                    b.ToTable("UserRoleMappings", (string)null);
+                });
+
+            modelBuilder.Entity("AppStudent.Data.RolePrivilege", b =>
+                {
+                    b.HasOne("AppStudent.Data.Role", "Role")
+                        .WithMany("RolePrivileges")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_RolePrivileges_Roles");
+
+                    b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AppStudent.Data.UserRoleMapping", b =>
+                {
+                    b.HasOne("AppStudent.Data.Role", "Role")
+                        .WithMany("UserRoleMappings")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRoleMappings_Roles");
+
+                    b.HasOne("AppStudent.Data.User", "User")
+                        .WithMany("UserRoleMappings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_UserRoleMappings_User");
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AppStudent.Data.Role", b =>
+                {
+                    b.Navigation("RolePrivileges");
+
+                    b.Navigation("UserRoleMappings");
+                });
+
+            modelBuilder.Entity("AppStudent.Data.User", b =>
+                {
+                    b.Navigation("UserRoleMappings");
                 });
 #pragma warning restore 612, 618
         }
