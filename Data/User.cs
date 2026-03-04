@@ -10,13 +10,19 @@ namespace AppStudent.Data
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        [EmailAddress]
-        public string Email { get; set; } = string.Empty;
-        [Required]
-        public string Role { get; set; } = string.Empty;
-        [Required, PasswordPropertyText]
+        public string UserName { get; set; } = string.Empty;
+
         public string Password { get; set; } = string.Empty;
+
+        public string PasswordSalt { get; set; } = string.Empty;
+
+        public int UserType { get; set; }
+
+        public bool IsActive { get; set; }
+        public bool IsDelete { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
+
 
     }
 }
