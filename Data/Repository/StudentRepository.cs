@@ -45,7 +45,7 @@ namespace AppStudent.Data.Repository
 
         public async Task<Student> GetByNameAsync(string name)
         {
-            return await _dbContext.Students.Where(n => n.Name == name).FirstOrDefaultAsync();
+            return await _dbContext.Students.Where(n => n.StudentName == name).FirstOrDefaultAsync();
         }
 
         public async Task<int> UpdateAsync(Student student)

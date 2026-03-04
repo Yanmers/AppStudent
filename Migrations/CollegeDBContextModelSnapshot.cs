@@ -132,7 +132,7 @@ namespace AppStudent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("StudentName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -173,7 +173,7 @@ namespace AppStudent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserType")
+                    b.Property<int>("UserTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -203,6 +203,55 @@ namespace AppStudent.Migrations
                         .IsUnique();
 
                     b.ToTable("UserRoleMappings", (string)null);
+                });
+
+            modelBuilder.Entity("AppStudent.Data.UserType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1500)
+                        .HasColumnType("nvarchar(1500)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTypes", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "for Students",
+                            Name = "Student"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "for Faculty",
+                            Name = "Faculty"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "for Supporting Staf",
+                            Name = "Supporting Staff"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "for Parents",
+                            Name = "Parents"
+                        });
                 });
 
             modelBuilder.Entity("AppStudent.Data.RolePrivilege", b =>

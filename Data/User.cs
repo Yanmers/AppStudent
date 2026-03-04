@@ -16,7 +16,7 @@ namespace AppStudent.Data
 
         public string PasswordSalt { get; set; } = string.Empty;
 
-        public int UserType { get; set; }
+        public int UserTypeId { get; set; }
 
         public bool IsActive { get; set; }
         public bool IsDelete { get; set; }

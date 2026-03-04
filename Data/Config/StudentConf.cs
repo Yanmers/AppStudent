@@ -13,10 +13,15 @@ namespace AppStudent.Data.Config
 
             builder.Property(n => n.Id).UseIdentityColumn();
 
-            builder.Property(n => n.Name).IsRequired();
+            builder.Property(n => n.StudentName).IsRequired();
             builder.Property(n => n.Email).IsRequired();
             builder.Property(n => n.Address).IsRequired();
             builder.Property(n => n.DBO).IsRequired();
+
+            //builder.HasOne(n => n.Department)
+            //   .WithMany(n => n.Students)
+            //   .HasForeignKey(n => n.DeparmentId)
+            //   .HasConstraintName("FK_Students_Department");
 
 
 

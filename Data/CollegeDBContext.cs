@@ -16,6 +16,7 @@ namespace AppStudent.Data
         public DbSet<Role> Roles { get; set; }
         public DbSet<RolePrivilege> RolePrivileges { get; set; }
         public DbSet<UserRoleMapping> UserRoleMappings { get; set; }
+        public DbSet<UserType> UserTypes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -25,6 +26,7 @@ namespace AppStudent.Data
             modelBuilder.ApplyConfiguration(new RoleConf());
             modelBuilder.ApplyConfiguration(new RolePrivilegeConf());
             modelBuilder.ApplyConfiguration(new UserRoleMappingConf());
+            modelBuilder.ApplyConfiguration(new UserTypeConf());
 
         }
 

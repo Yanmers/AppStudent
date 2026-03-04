@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace AppStudent.Migrations
 {
     /// <inheritdoc />
-    public partial class AddTable : Migration
+    public partial class AddUserTypetable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,7 +51,7 @@ namespace AppStudent.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StudentName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DBO = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -68,7 +70,7 @@ namespace AppStudent.Migrations
                     UserName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordSalt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserType = table.Column<int>(type: "int", nullable: false),
+                    UserTypeId = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsDelete = table.Column<bool>(type: "bit", nullable: false),
                     CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -77,6 +79,20 @@ namespace AppStudent.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTypes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,10 +120,58 @@ namespace AppStudent.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserRoleMappings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    RoleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoleMappings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRoleMappings_Roles",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserRoleMappings_User",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "UserTypes",
+                columns: new[] { "Id", "Description", "Name" },
+                values: new object[,]
+                {
+                    { 1, "for Students", "Student" },
+                    { 2, "for Faculty", "Faculty" },
+                    { 3, "for Supporting Staf", "Supporting Staff" },
+                    { 4, "for Parents", "Parents" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_RolePrivileges_RoleId",
                 table: "RolePrivileges",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoleMappings_RoleId",
+                table: "UserRoleMappings",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "UK_UserRoleMapping",
+                table: "UserRoleMappings",
+                columns: new[] { "UserId", "RoleId" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -123,10 +187,16 @@ namespace AppStudent.Migrations
                 name: "Students");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "UserRoleMappings");
+
+            migrationBuilder.DropTable(
+                name: "UserTypes");
 
             migrationBuilder.DropTable(
                 name: "Roles");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

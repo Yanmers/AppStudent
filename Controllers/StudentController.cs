@@ -126,7 +126,7 @@ namespace AppStudent.Controllers
             Student student = new Student
             {
                 // Id = newId,
-                Name = model.Name,
+                StudentName = model.Name,
                 Email = model.Email,
                 Address = model.Address,
                 DBO = model.DBO
@@ -163,7 +163,7 @@ namespace AppStudent.Controllers
                 return NotFound();
             }
 
-            studentUpdate.Name = model.Name;
+            studentUpdate.StudentName = model.Name;
             studentUpdate.Email = model.Email;
             studentUpdate.Address = model.Address;
             studentUpdate.DBO = model.DBO;
@@ -198,7 +198,7 @@ namespace AppStudent.Controllers
             var studentDTO = new StudentDTO
             {
                 Id = studentUpdate.Id,
-                Name = studentUpdate.Name,
+                Name = studentUpdate.StudentName,
                 Email = studentUpdate.Email,
                 Address = studentUpdate.Address,
                 DBO = studentUpdate.DBO
@@ -212,7 +212,7 @@ namespace AppStudent.Controllers
                 return BadRequest();
             }
 
-            studentUpdate.Name = studentDTO.Name;
+            studentUpdate.StudentName = studentDTO.Name;
             studentUpdate.Email = studentDTO.Email;
             studentUpdate.Address = studentDTO.Address;
             studentUpdate.DBO = studentDTO.DBO;
