@@ -21,6 +21,11 @@ namespace AppStudent.Data.Config
             builder.Property(n => n.IsDelete).IsRequired();
             builder.Property(n => n.CreateDate).IsRequired();
 
+            builder.HasOne(n => n.UserType)
+               .WithMany(n => n.Users)
+               .HasForeignKey(n => n.UserTypeId)
+               .HasConstraintName("FK_Users_Usertypes");
+
 
         }
     }
