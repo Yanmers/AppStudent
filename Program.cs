@@ -33,6 +33,7 @@ namespace AppStudent
             //builder.Services.AddSingleton<IMyLogger, LogToFile>();
             //builder.Services.AddTransient<IMyLogger, LogToServerMemory>();
             builder.Services.AddTransient<IStudentRepository, StudentRepository>();
+            builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 
 
 

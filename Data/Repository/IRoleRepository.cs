@@ -6,7 +6,7 @@
 
         Task<Role> GetByIDAsync(int id);
 
-        Task<Role> GetByNameAsync(String roleName);
+        Task<Role> GetByNameAsync(string roleName);
 
         Task<int> CreateAsync(Role role);
 

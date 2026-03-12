@@ -25,9 +25,9 @@ namespace AppStudent.Data.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Role>> GetAllAsync()
+        public async Task<List<Role>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _collegeDB.Roles.ToListAsync();
         }
 
         public Task<Role> GetByIDAsync(int id)

@@ -1,11 +1,7 @@
 ﻿using AppStudent.Data;
 using AppStudent.Data.Repository;
 using AppStudent.Models;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Octokit.Internal;
-using Refit;
 using System.Threading.Tasks;
 
 namespace AppStudent.Controllers
@@ -14,18 +10,18 @@ namespace AppStudent.Controllers
     [ApiController]
     public class RoleController : ControllerBase
     {
-        //private readonly IMapper _mapper;
         private readonly IRoleRepository _repository;
 
 
         public RoleController(IRoleRepository repository)
         {
-            //_mapper = mapper;
             _repository = repository;
         }
 
         [HttpPost]
         [Route("Create")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RoleDTO>> CreateRoleAsync(RoleDTO dto)
         {
             if (dto == null)
@@ -46,9 +42,20 @@ namespace AppStudent.Controllers
             role.CreateDate = DateTime.Now;
             role.ModifiedDate = DateTime.Now;
 
-            var result = await _repository.CreateAsync(role);
+            await _repository.CreateAsync(role);
 
-            return Ok(result);
+            return Ok(role);
+        }
+
+        [HttpGet]
+        [Route("All", Name = "GetAllRoles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<RoleDTO>> GetRoleAsync()
+        {
+            var roles = await _repository.GetAllAsync();
+
+            return Ok(roles);
         }
 
     }
