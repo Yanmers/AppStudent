@@ -11,6 +11,7 @@ namespace AppStudent.Configuration
         {
             CreateMap<StudentDTO, Student>().ReverseMap();
             CreateMap<UserDTO, User>().ReverseMap();
+            CreateMap<RoleDTO, Role>().ReverseMap();
         }
     }
 }

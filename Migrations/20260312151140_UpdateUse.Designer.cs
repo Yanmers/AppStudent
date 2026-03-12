@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStudent.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    [Migration("20260304210825_AddUserTypetable")]
-    partial class AddUserTypetable
+    [Migration("20260312151140_UpdateUse")]
+    partial class UpdateUse
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,10 +176,16 @@ namespace AppStudent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserTypeId")
+                    b.Property<string>("UserTypeId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserTypeId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserTypeId1");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -267,6 +273,17 @@ namespace AppStudent.Migrations
                         .HasConstraintName("FK_RolePrivileges_Roles");
 
                     b.Navigation("Role");
+                });
+
+            modelBuilder.Entity("AppStudent.Data.User", b =>
+                {
+                    b.HasOne("AppStudent.Data.UserType", "UserType")
+                        .WithMany()
+                        .HasForeignKey("UserTypeId1")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserType");
                 });
 
             modelBuilder.Entity("AppStudent.Data.UserRoleMapping", b =>

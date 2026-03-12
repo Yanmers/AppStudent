@@ -15,5 +15,6 @@ namespace AppStudent.Data.Repository
         Task<int> UpdateAsync(Student student);
 
         Task<bool> DeleteAsync(Student student);
+
     }
 }

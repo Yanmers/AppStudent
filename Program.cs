@@ -34,6 +34,8 @@ namespace AppStudent
             //builder.Services.AddTransient<IMyLogger, LogToServerMemory>();
             builder.Services.AddTransient<IStudentRepository, StudentRepository>();
 
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

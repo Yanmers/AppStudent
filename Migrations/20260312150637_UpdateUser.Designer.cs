@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStudent.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    [Migration("20260305145859_AddFK_Users_Usertypes")]
-    partial class AddFK_Users_Usertypes
+    [Migration("20260312150637_UpdateUser")]
+    partial class UpdateUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,14 +273,11 @@ namespace AppStudent.Migrations
 
             modelBuilder.Entity("AppStudent.Data.User", b =>
                 {
-                    b.HasOne("AppStudent.Data.UserType", "UserType")
+                    b.HasOne("AppStudent.Data.UserType", null)
                         .WithMany("Users")
                         .HasForeignKey("UserTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Users_Usertypes");
-
-                    b.Navigation("UserType");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("AppStudent.Data.UserRoleMapping", b =>

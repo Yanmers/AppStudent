@@ -26,7 +26,6 @@ namespace AppStudent.Data.Config
                .HasForeignKey(n => n.UserTypeId)
                .HasConstraintName("FK_Users_Usertypes");
 
-
         }
     }
 }
