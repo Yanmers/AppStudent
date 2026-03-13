@@ -139,7 +139,7 @@ namespace AppStudent.Controllers
         [ProducesResponseType(StatusCodes.Status302Found)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RoleDTO>> UpdateRoleAsync(RoleDTO dto)
+        public async Task<ActionResult<RoleDTO>> UpdateRoleAsync([FromBody] RoleDTO dto)
         {
             try
             {
@@ -148,32 +148,63 @@ namespace AppStudent.Controllers
                     return BadRequest();
                 }
 
-                var role = await _repository.GetAsync(role => role.Id == dto.Id);
+                //var role = await _repository.GetAsync(role => role.Id == dto.Id);
+                var role = await _repository.GetByIdAsync(dto.Id);
 
                 if (role == null)
                 {
                     return BadRequest($"Role not found with id {dto.Id} to update");
                 }
 
-                var newRole = new Role
-                {
-                    RoleName = dto.RoleName,
-                    Description = dto.Description,
-                    IsActive = dto.IsActive
-                };
+                //var newRole = new Role
+                //{
+                //    RoleName = dto.RoleName,
+                //    Description = dto.Description,
+                //    IsActive = dto.IsActive
+                //};
+                //newRole.IsDelete = false;
+                //newRole.ModifiedDate = DateTime.Now;
 
-                newRole.IsDelete = false;
-                newRole.ModifiedDate = DateTime.Now;
+                role.RoleName = dto.RoleName;
+                role.Description = dto.Description;
+                role.IsActive = dto.IsActive;
+                role.IsDelete = false;
+                role.ModifiedDate = DateTime.Now;
 
-                await _repository.UpdateAsync(newRole);
+                await _repository.UpdateAsync(role);
 
-                return Ok(newRole);
+                return Ok(role);
             }
             catch (Exception ex)
             {
 
                 return NotFound($"{ex}");
             }
+        }
+
+        [HttpDelete]
+        [Route("Delete/{id}", Name = "DeleteRoleById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<RoleDTO>> DeleteRoleAsync(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest($"The id: {id} is not valid");
+            }
+
+            var deleteRole = await _repository.GetByIdAsync(id);
+
+            if (deleteRole == null)
+            {
+                return NotFound();
+            }
+
+            await _repository.DeleteAsync(deleteRole);
+
+            return Ok(true);
         }
     }
 

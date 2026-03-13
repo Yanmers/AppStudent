@@ -23,12 +23,7 @@ namespace AppStudent.Data.Repository
 
         public async Task<bool> DeleteAsync(Student student)
         {
-            //var studentDelete = _dbContext.Students.Where(student => student.Id == id).FirstOrDefault();
 
-            //if (id == null)
-            //{
-            //    throw new ArgumentNullException($"Not Student Found whit the id: {id} ");
-            //}
             _dbContext.Students.Remove(student);
             await _dbContext.SaveChangesAsync();
 

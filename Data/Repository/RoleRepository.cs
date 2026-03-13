@@ -22,9 +22,11 @@ namespace AppStudent.Data.Repository
 
         }
 
-        public Task<bool> DeleteAsync(Role role)
+        public async Task<bool> DeleteAsync(Role role)
         {
-            throw new NotImplementedException();
+            _collegeDB.Roles.Remove(role);
+            _collegeDB.SaveChanges();
+            return true;
         }
 
         public async Task<List<Role>> GetAllAsync()
