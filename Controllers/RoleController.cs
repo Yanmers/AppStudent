@@ -190,21 +190,29 @@ namespace AppStudent.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RoleDTO>> DeleteRoleAsync(int id)
         {
-            if (id <= 0)
+            try
             {
-                return BadRequest($"The id: {id} is not valid");
+                if (id <= 0)
+                {
+                    return BadRequest($"The id: {id} is not valid");
+                }
+
+                var deleteRole = await _repository.GetByIdAsync(id);
+
+                if (deleteRole == null)
+                {
+                    return NotFound();
+                }
+
+                await _repository.DeleteAsync(deleteRole);
+
+                return Ok(true);
             }
-
-            var deleteRole = await _repository.GetByIdAsync(id);
-
-            if (deleteRole == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                return BadRequest($"{ex}");
+
             }
-
-            await _repository.DeleteAsync(deleteRole);
-
-            return Ok(true);
         }
     }
 
