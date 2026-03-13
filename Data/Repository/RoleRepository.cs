@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -46,9 +47,11 @@ namespace AppStudent.Data.Repository
             return await _collegeDB.Roles.Where(n => n.RoleName == roleName).FirstOrDefaultAsync();
         }
 
-        public Task<int> UpdateAsync(Role role)
+        public async Task<int> UpdateAsync(Role role)
         {
-            throw new NotImplementedException();
+            _collegeDB.Update(role);
+            await _collegeDB.SaveChangesAsync();
+            return role.Id;
         }
     }
 }

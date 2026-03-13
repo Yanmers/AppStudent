@@ -133,6 +133,48 @@ namespace AppStudent.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("Update", Name = "UpdateAsync")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<RoleDTO>> UpdateRoleAsync(RoleDTO dto)
+        {
+            try
+            {
+                if (dto == null || dto.Id <= 0)
+                {
+                    return BadRequest();
+                }
+
+                var role = await _repository.GetAsync(role => role.Id == dto.Id);
+
+                if (role == null)
+                {
+                    return BadRequest($"Role not found with id {dto.Id} to update");
+                }
+
+                var newRole = new Role
+                {
+                    RoleName = dto.RoleName,
+                    Description = dto.Description,
+                    IsActive = dto.IsActive
+                };
+
+                newRole.IsDelete = false;
+                newRole.ModifiedDate = DateTime.Now;
+
+                await _repository.UpdateAsync(newRole);
+
+                return Ok(newRole);
+            }
+            catch (Exception ex)
+            {
+
+                return NotFound($"{ex}");
+            }
+        }
     }
 
 }
