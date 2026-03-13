@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AppStudent.Migrations
 {
     [DbContext(typeof(CollegeDBContext))]
-    [Migration("20260312151140_UpdateUse")]
-    partial class UpdateUse
+    [Migration("20260313193154_Tables")]
+    partial class Tables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,16 +176,12 @@ namespace AppStudent.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserTypeId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserTypeId1")
+                    b.Property<int>("UserTypeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserTypeId1");
+                    b.HasIndex("UserTypeId");
 
                     b.ToTable("Users", (string)null);
                 });
@@ -278,10 +274,11 @@ namespace AppStudent.Migrations
             modelBuilder.Entity("AppStudent.Data.User", b =>
                 {
                     b.HasOne("AppStudent.Data.UserType", "UserType")
-                        .WithMany()
-                        .HasForeignKey("UserTypeId1")
+                        .WithMany("Users")
+                        .HasForeignKey("UserTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FK_Users_Usertypes");
 
                     b.Navigation("UserType");
                 });
@@ -317,6 +314,11 @@ namespace AppStudent.Migrations
             modelBuilder.Entity("AppStudent.Data.User", b =>
                 {
                     b.Navigation("UserRoleMappings");
+                });
+
+            modelBuilder.Entity("AppStudent.Data.UserType", b =>
+                {
+                    b.Navigation("Users");
                 });
 #pragma warning restore 612, 618
         }

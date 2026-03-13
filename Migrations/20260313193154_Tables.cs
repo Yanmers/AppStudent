@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace AppStudent.Migrations
 {
     /// <inheritdoc />
-    public partial class TableAll : Migration
+    public partial class Tables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -119,7 +119,7 @@ namespace AppStudent.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_UserTypes_UserTypeId",
+                        name: "FK_Users_Usertypes",
                         column: x => x.UserTypeId,
                         principalTable: "UserTypes",
                         principalColumn: "Id",

@@ -19,6 +19,8 @@ namespace AppStudent.Data.Config
             builder.Property(n => n.IsDelete).IsRequired();
             builder.Property(n => n.CreateDate).IsRequired();
 
+
+
         }
     }
 }
