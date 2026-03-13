@@ -1,4 +1,7 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+
 namespace AppStudent.Data.Repository
 {
     public class RolePrivilegeRepository : IRolePrivilegeRepository
@@ -15,29 +18,38 @@ namespace AppStudent.Data.Repository
             return rolePrivilege.Id;
         }
 
-        public Task<bool> DeleteAsync(RolePrivilege olePrivilege)
+        public async Task<bool> DeleteAsync(RolePrivilege rolePrivilege)
         {
-            throw new NotImplementedException();
+            _collegeDBContext.RolePrivileges.Remove(rolePrivilege);
+            await _collegeDBContext.SaveChangesAsync();
+            return true;
         }
 
-        public Task<List<RolePrivilege>> GetAllAsync()
+        public async Task<List<RolePrivilege>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.RolePrivileges.ToListAsync();
         }
 
-        public Task<RolePrivilege> GetByIdAsync(int id)
+        public async Task<RolePrivilege> GetAsync(Expression<Func<RolePrivilege, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.RolePrivileges.FirstOrDefaultAsync(predicate);
         }
 
-        public Task<RolePrivilege> GetByNameAsync(string roleName)
+        public async Task<RolePrivilege> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.RolePrivileges.Where(n => n.Id == id).FirstOrDefaultAsync();
         }
 
-        public Task<int> UpdateAsync(RolePrivilege rolePrivilege)
+        public async Task<RolePrivilege> GetByroleNameAsync(string rolePrivilegeName)
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.RolePrivileges.Where(n => n.RolePrivilegeName == rolePrivilegeName).FirstOrDefaultAsync();
+        }
+
+        public async Task<int> UpdateAsync(RolePrivilege rolePrivilege)
+        {
+            _collegeDBContext.RolePrivileges.Add(rolePrivilege);
+            await _collegeDBContext.SaveChangesAsync();
+            return rolePrivilege.Id;
         }
     }
 }
