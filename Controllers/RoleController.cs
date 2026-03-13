@@ -21,41 +21,59 @@ namespace AppStudent.Controllers
         [HttpPost]
         [Route("Create")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RoleDTO>> CreateRoleAsync(RoleDTO dto)
         {
-            if (dto == null)
+            try
             {
-                return BadRequest();
+                if (dto == null)
+                {
+                    return BadRequest();
+                }
+
+                Role role = new Role
+                {
+                    Id = dto.Id,
+                    RoleName = dto.RoleName,
+                    Description = dto.Description,
+                    IsActive = dto.IsActive
+
+                };
+
+                role.IsDelete = false;
+                role.CreateDate = DateTime.Now;
+                role.ModifiedDate = DateTime.Now;
+
+                await _repository.CreateAsync(role);
+
+                return Ok(role);
             }
-
-            Role role = new Role
+            catch (Exception ex)
             {
-                Id = dto.Id,
-                RoleName = dto.RoleName,
-                Description = dto.Description,
-                IsActive = dto.IsActive
 
-            };
-
-            role.IsDelete = false;
-            role.CreateDate = DateTime.Now;
-            role.ModifiedDate = DateTime.Now;
-
-            await _repository.CreateAsync(role);
-
-            return Ok(role);
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet]
         [Route("All", Name = "GetAllRoles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RoleDTO>> GetRoleAsync()
         {
-            var roles = await _repository.GetAllAsync();
+            try
+            {
+                var roles = await _repository.GetAllAsync();
 
-            return Ok(roles);
+                return Ok(roles);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex);
+            }
         }
 
     }
