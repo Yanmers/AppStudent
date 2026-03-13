@@ -38,7 +38,6 @@ namespace AppStudent.Controllers
                     RoleName = dto.RoleName,
                     Description = dto.Description,
                     IsActive = dto.IsActive
-
                 };
 
                 role.IsDelete = false;
@@ -61,7 +60,7 @@ namespace AppStudent.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<RoleDTO>> GetRoleAsync()
+        public async Task<ActionResult<RoleDTO>> GetRolesAsync()
         {
             try
             {
@@ -73,6 +72,64 @@ namespace AppStudent.Controllers
             {
 
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("{id:int}", Name = "GetRoleById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetRoleById(int id)
+        {
+            try
+            {
+                if (id <= 0)
+                {
+                    return BadRequest($"Please validate{id}, is not correct");
+                }
+                var role = await _repository.GetAsync(role => role.Id == id);
+
+                if (role == null)
+                {
+                    return NotFound($"The Role not found with id: {id}");
+                }
+                return Ok(role);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest($"{ex}");
+            }
+        }
+
+        [HttpGet]
+        [Route("{name:alpha}", Name = "GetRoleByName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status302Found)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult> GetByName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return BadRequest($"Please validate{name}, is not correct");
+                }
+                var role = await _repository.GetAsync(role => role.RoleName == name);
+
+                if (role == null)
+                {
+                    return NotFound($"The Role not found with id: {name}");
+                }
+                return Ok(role);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest($"{ex}");
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace AppStudent.Data.Repository
 {
@@ -30,14 +31,19 @@ namespace AppStudent.Data.Repository
             return await _collegeDB.Roles.ToListAsync();
         }
 
-        public Task<Role> GetByIDAsync(int id)
+        public async Task<Role> GetAsync(Expression<Func<Role, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return await _collegeDB.Roles.FirstOrDefaultAsync(predicate);
         }
 
-        public Task<Role> GetByNameAsync(string roleName)
+        public async Task<Role> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _collegeDB.Roles.Where(n => n.Id == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<Role> GetByNameAsync(string roleName)
+        {
+            return await _collegeDB.Roles.Where(n => n.RoleName == roleName).FirstOrDefaultAsync();
         }
 
         public Task<int> UpdateAsync(Role role)
