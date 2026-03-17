@@ -32,7 +32,7 @@ namespace AppStudent.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudents()
         {
-            //var student = _dbContext.Students.ToList();
+
             var student = await _studentRespository.GetAllAsync();
 
             if (student == null)
@@ -98,7 +98,6 @@ namespace AppStudent.Controllers
                 _logger.LogWarning("BadRequest");
                 return BadRequest();
             }
-            //var studentById = await _dbContext.Students.Where(n => n.Id == id).FirstOrDefaultAsync();
             var studentById = await _studentRespository.GetByIDAsync(id);
             if (studentById == null)
             {
@@ -121,7 +120,6 @@ namespace AppStudent.Controllers
                 return BadRequest();
             }
 
-            //int newId = _dbContext.Students.LastOrDefault()!.Id + 1;
 
             Student student = new Student
             {
@@ -132,9 +130,8 @@ namespace AppStudent.Controllers
                 DBO = model.DBO
             };
 
-            //_dbContext.Students.Add(student);
             await _studentRespository.CreateAsync(student);
-            //await _dbContext.SaveChangesAsync();
+
 
             model.Id = student.Id;
 
@@ -217,7 +214,6 @@ namespace AppStudent.Controllers
             studentUpdate.Address = studentDTO.Address;
             studentUpdate.DBO = studentDTO.DBO;
 
-            //await _dbContext.SaveChangesAsync();
             await _studentRespository.UpdateAsync(studentUpdate);
             return NoContent();
         }
@@ -264,7 +260,6 @@ namespace AppStudent.Controllers
                 return NotFound($"The Student With Id {id} not founf");
             }
 
-            //_dbContext.Students.Remove(deleteStudent);
 
             await _studentRespository.DeleteAsync(deleteStudent);
 
