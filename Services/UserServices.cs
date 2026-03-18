@@ -15,10 +15,9 @@ namespace AppStudent.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<User>> GetAllUserAsync()
+        public async Task<IEnumerable<User>> GetAllUserAsync()
         {
             throw new NotImplementedException();
-        }
 
         public Task<User> GetUserByIdAsync(int id)
         {

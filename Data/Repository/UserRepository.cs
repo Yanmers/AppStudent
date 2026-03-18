@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace AppStudent.Data.Repository
 {
 
@@ -9,29 +11,33 @@ namespace AppStudent.Data.Repository
         {
             _collegeDBContext = CollegeDBContext;
         }
-        public Task<bool> DeleteUserAsync(int id)
+        public async Task<bool> DeleteUserAsync(int id)
         {
-            throw new NotImplementedException();
+            _collegeDBContext.Remove(id);
+            await _collegeDBContext.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<User>> GetAllUserAsync()
+        public async Task<IEnumerable<User>> GetAllUserAsync()
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.Users.ToListAsync();
         }
 
-        public Task<User> GetUserById(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.Users.FindAsync(id);
         }
 
-        public Task<User> GetUserByNameAsync(string name)
+        public async Task<User> GetUserByNameAsync(string name)
         {
-            throw new NotImplementedException();
+            return await _collegeDBContext.Users.Where(n => n.UserName == name).FirstOrDefaultAsync();
         }
 
-        public Task<User> UpdateUserAsync(User user, int id)
+        public async Task<User> UpdateUserAsync(User user)
         {
-            throw new NotImplementedException();
+            _collegeDBContext.Users.Add(user);
+            await _collegeDBContext.SaveChangesAsync();
+            return user;
         }
     }
 }
