@@ -1,14 +1,13 @@
-﻿using AppStudent.Data.Repository;
-using Octokit;
-
-namespace AppStudent.Services
+﻿
+namespace AppStudent.Data.Repository
 {
-    public class UserServices : IUserServices
+
+    public class UserRepository : IUserRepository
     {
-        private readonly IUserRepository _userRepository;
-        public UserServices(IUserRepository userRepository)
+        private readonly CollegeDBContext _collegeDBContext;
+        public UserRepository(CollegeDBContext CollegeDBContext)
         {
-            _userRepository = userRepository;
+            _collegeDBContext = CollegeDBContext;
         }
         public Task<bool> DeleteUserAsync(int id)
         {
@@ -20,12 +19,12 @@ namespace AppStudent.Services
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByIdAsync(int id)
+        public Task<User> GetUserById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<User> GetUserByName(string UserName)
+        public Task<User> GetUserByNameAsync(string name)
         {
             throw new NotImplementedException();
         }
